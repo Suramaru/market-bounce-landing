@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; frame-src https://accounts.google.com/gsi/; connect-src https://script.google.com https://script.googleusercontent.com https://accounts.google.com/gsi/; img-src 'self' data:; media-src 'self'; base-uri 'none'; form-action 'none'">
+<title>MARKET BOUNCE</title>
+<link rel="canonical" href="https://marketbouncegame.com/">
+<meta name="description" content="Roguelite de pachinko en la bolsa de valores. Recibe la demo en tu correo.">
+<meta name="theme-color" content="#050c08">
+<meta property="og:title" content="MARKET BOUNCE">
+<meta property="og:description" content="Cada dólar cuenta. Tú decides cuándo salir.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://marketbouncegame.com/">
+<meta property="og:image" content="https://marketbouncegame.com/assets/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="assets/logo.webp">
+<link rel="preconnect" href="https://accounts.google.com">
+<style>
+:root{
+  --bg:#050c08;--panel:#0a120e;--line:#1f2e26;--ink:#e9efe8;--muted:#a9b8ae;
+  --green:#2be27a;--btn:#17b65a;--btn-edge:#8dffb8;--btn-ink:#021208;
+  --gold:#f0b040;--red:#ff7076;
+  --display:"DIN Condensed","Bahnschrift SemiBold Condensed","Bahnschrift","sans-serif-condensed","Roboto Condensed","Arial Narrow",sans-serif;
+  --text:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--text);-webkit-text-size-adjust:100%}
+body{
+  background-image:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.20) 0 1px,transparent 1px 3px),
+    linear-gradient(rgba(43,226,122,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(43,226,122,.045) 1px,transparent 1px),
+    radial-gradient(120% 70% at 50% 35%,#0d2117 0,var(--bg) 72%);
+  background-size:auto,32px 32px,32px 32px,auto;
+}
+[hidden]{display:none!important}
+.both{display:grid;justify-items:center;align-content:center}
+.both>span{grid-area:1/1;align-self:center}
+.both>span[aria-hidden=true]{visibility:hidden}
+label.both,.msg.both{justify-items:start}
+a{color:inherit}
+button,input{font:inherit}
+.screen{
+  min-height:100vh;min-height:100svh;max-width:480px;margin:0 auto;
+  padding:max(10px,env(safe-area-inset-top)) 16px max(10px,env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;justify-content:center;gap:12px;
+}
+.top{position:relative;display:flex;justify-content:center;flex:none}
+.logo{display:block;height:clamp(66px,11.5svh,96px);width:auto;max-width:68%}
+.lang{
+  position:absolute;right:0;top:0;width:44px;min-height:36px;padding:0;
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;
+  font-family:var(--display);font-size:16px;font-weight:700;cursor:pointer;
+}
+.hook{flex:none;text-align:center}
+.what{margin:0;color:var(--muted);font-size:13.5px;line-height:1.3}
+h1{margin:4px 0 0;font-family:var(--display);font-size:clamp(19px,5.5vw,24px);line-height:1.12;font-weight:700;color:var(--gold)}
+.stage{
+  flex:none;width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;
+  border:1px solid #4a3c20;border-radius:8px;background:#04100a url(assets/poster.webp) center/cover;
+}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stagebox{flex:none;position:relative;width:100%}
+.watch{
+  position:absolute;right:6px;top:6px;display:flex;align-items:center;gap:6px;min-height:38px;padding:0 11px 0 8px;
+  background:rgba(3,10,6,.88);color:#fff;border:1px solid rgba(255,255,255,.34);border-radius:8px;
+  font-size:13.5px;font-weight:600;text-decoration:none;
+}
+.watch:active{background:#0e5a2c}
+.watch svg{flex:none;width:16px;height:16px}
+.watch .both,.also .both{justify-items:start}
+.also{display:flex;align-items:center;justify-content:center;gap:7px;min-height:44px;color:var(--ink);font-size:15px;text-underline-offset:3px}
+.also svg{flex:none;width:16px;height:16px}
+.cta{flex:none;display:flex;flex-direction:column;gap:8px}
+h2{margin:0;text-align:center;font-family:var(--display);font-size:clamp(24px,7.2vw,31px);line-height:1.04;font-weight:700;color:var(--green)}
+h2 span{white-space:pre-line}
+.sub{margin:0 0 4px;text-align:center;color:var(--ink);font-size:14.5px}
+.google{
+  display:flex;align-items:center;justify-content:center;gap:14px;width:100%;min-height:64px;padding:0 16px;
+  background:#fff;color:#1f1f1f;border:1px solid #747775;border-radius:8px;
+  font-family:Roboto,var(--text);font-size:20px;font-weight:500;cursor:pointer;
+  box-shadow:0 0 0 3px rgba(141,255,184,.34),0 0 24px rgba(43,226,122,.36);
+  transition:transform .08s ease-out,background .12s;
+}
+.google:active{transform:scale(.98);background:#eef0ee}
+.google[disabled]{cursor:progress;color:#5e5e5e;box-shadow:none}
+.google svg{flex:none;width:26px;height:26px}
+.alt{
+  align-self:center;min-height:40px;padding:0 12px;background:none;border:0;color:var(--ink);
+  font-size:15px;cursor:pointer;
+}
+.alt span{text-decoration:underline;text-underline-offset:3px}
+.open{
+  display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:8px;text-decoration:none;
+  background:var(--btn);border:2px solid var(--btn-edge);color:var(--btn-ink);
+  font-family:var(--display);font-size:22px;font-weight:700;
+}
+form{display:flex;flex-direction:column;gap:6px;margin:0}
+label{font-size:14px;color:var(--ink)}
+.row{display:flex;gap:8px}
+input[type=email]{
+  flex:1;min-width:0;min-height:52px;padding:0 12px;background:#fff;color:#111;
+  border:2px solid var(--btn-edge);border-radius:8px;font-size:17px;
+}
+.send{
+  flex:none;min-height:52px;padding:0 16px;background:var(--btn);color:var(--btn-ink);
+  border:2px solid var(--btn-edge);border-radius:8px;font-family:var(--display);font-size:20px;font-weight:700;cursor:pointer;
+}
+.send[disabled]{opacity:.65;cursor:progress}
+.trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.msg{margin:0;padding:8px 10px;border-left:3px solid var(--red);background:rgba(255,112,118,.10);color:#ffd5d7;font-size:14px;line-height:1.3}
+.notice{margin:0;color:var(--muted);font-size:12px;line-height:1.36;text-align:center}
+.notice span{white-space:pre-line;text-wrap:balance}
+.notice a{color:var(--ink)}
+.done{justify-content:center;gap:14px;text-align:center}
+.done .logo{height:82px}
+.state{margin:0;color:var(--muted);font-size:16px}
+.done h2{font-size:36px;margin-bottom:8px}
+#doneTitle:focus{outline:none}
+.lead{margin:0;font-size:17px;line-height:1.35;overflow-wrap:anywhere}
+.lead span{text-wrap:balance}
+.ask{margin:16px 0 8px;font-size:15px;color:var(--muted)}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chip{
+  min-height:50px;background:var(--panel);color:var(--ink);border:1px solid #33493d;border-radius:8px;
+  font-size:16px;cursor:pointer;
+}
+.chip:active{background:#0e5a2c}
+.chip[aria-pressed=true]{background:#0e5a2c;border-color:var(--green);font-weight:600}
+.social{
+  display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border-radius:8px;text-decoration:none;
+  background:var(--btn);border:2px solid var(--btn-edge);color:var(--btn-ink);
+  font-family:var(--display);font-size:20px;font-weight:700;
+}
+.social svg{flex:none;width:24px;height:24px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (max-height:700px){
+  .screen{gap:9px}
+  .logo{height:62px}
+  h2{font-size:26px}
+  .alt{min-height:32px}
+  .cta{gap:6px}
+}
+@media (max-height:620px){
+  .screen{gap:8px}
+  .what{display:none}
+  .logo{height:58px}
+  .google{min-height:56px}
+  .alt{min-height:34px}
+}
+@media (orientation:landscape) and (max-height:560px){
+  #landing{
+    max-width:920px;display:grid;column-gap:20px;row-gap:6px;align-content:center;align-items:center;
+    grid-template-columns:minmax(0,1fr) minmax(300px,400px);
+    grid-template-areas:"stage top" "stage hook" "stage cta";
+  }
+  #landing .top{grid-area:top}
+  #landing .hook{grid-area:hook}
+  #landing .stagebox{grid-area:stage}
+  #landing .cta{grid-area:cta;gap:4px}
+  #landing .logo{height:48px}
+  #landing h1{font-size:17px}
+  #landing h2{font-size:22px}
+  #landing .google{min-height:48px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<main class="screen" id="landing">
+  <div class="top">
+    <img class="logo" src="assets/logo.webp" width="720" height="277" alt="MARKET BOUNCE, demo">
+    <button class="lang" type="button" data-lang-toggle></button>
+  </div>
+  <div class="hook">
+    <p class="what" data-t="what"></p>
+    <h1><span data-t="hook1"></span> <span data-t="hook2"></span></h1>
+  </div>
+  <div class="stagebox">
+    <div class="stage" aria-hidden="true"><video id="clip" poster="assets/poster.webp" muted loop playsinline preload="none"></video></div>
+    <a class="watch" data-trailer target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6a.6.6 0 0 0 .92.5l10.6-6.8a.6.6 0 0 0 0-1l-10.6-6.8a.6.6 0 0 0-.92.5z"/></svg><span data-t="watchTrailer"></span></a>
+  </div>
+  <section class="cta" aria-labelledby="ctaTitle">
+    <h2 id="ctaTitle" data-t="ctaTitle"></h2>
+    <p class="sub" data-t="ctaSub"></p>
+    <p class="msg" id="landingMsg" role="alert" hidden></p>
+    <a class="open" id="openBrowser" hidden data-t="openBrowser"></a>
+    <button class="google" id="googleBtn" type="button" disabled>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span id="googleLabel"></span>
+    </button>
+    <button class="alt" id="emailToggle" type="button" data-t="useEmail"></button>
+    <form id="emailForm" hidden novalidate>
+      <label for="email" data-t="emailLabel"></label>
+      <div class="row">
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="nombre@correo.com" required>
+        <button class="send" id="emailSend" type="submit" data-t="emailSend"></button>
+      </div>
+      <input class="trap" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </form>
+    <p class="notice" id="notice"></p>
+  </section>
+</main>
+
+<main class="screen done" id="done" hidden>
+  <div class="top">
+    <img class="logo" src="assets/logo.webp" width="720" height="277" alt="MARKET BOUNCE, demo">
+    <button class="lang" type="button" data-lang-toggle></button>
+  </div>
+  <p class="state" id="saving" role="status"></p>
+  <div id="saved" hidden>
+    <h2 id="doneTitle" tabindex="-1"></h2>
+    <p class="lead" id="doneLead"></p>
+    <p class="ask" data-t="profileAsk"></p>
+    <div class="chips" id="profiles"></div>
+  </div>
+  <div id="failed" hidden>
+    <p class="msg" role="alert" data-t="saveFailed"></p>
+    <button class="send" id="retry" type="button" data-t="retry" style="width:100%;margin-top:10px"></button>
+  </div>
+  <a class="social" id="instagram" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></svg>
+    <span data-t="instagram"></span>
+  </a>
+  <a class="also" data-trailer target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6a.6.6 0 0 0 .92.5l10.6-6.8a.6.6 0 0 0 0-1l-10.6-6.8a.6.6 0 0 0-.92.5z"/></svg><span data-t="watchTrailer"></span></a>
+  <p class="notice"><a href="privacidad.html" data-t="privacyLink" data-privacy></a></p>
+</main>
+
+<noscript><p style="padding:16px">Para dejar tu correo, escribe a neonneststudio@gmail.com · To leave your email, write to neonneststudio@gmail.com</p></noscript>
+
+<script>
+"use strict";
+var CONFIG = {
+  clientId: "57757740150-57dq327blemh0bb2qsus8htpv4o3h11c.apps.googleusercontent.com",
+  endpoint: "https://script.google.com/macros/s/AKfycbzeXdhResQ1dxhvOlGHybkiWL2JF-1ai6O6GoznpOMrFLe5p-vAB07wPeXfIfmgS-ZH/exec",
+  instagram: "https://www.instagram.com/neonneststudio/",
+  trailer: "https://www.youtube.com/watch?v=tJNy4sfSfjU",
+  contact: "neonneststudio@gmail.com",
+  noticeVersion: "2026-11-06"
+};
+
+var TEXT = {
+  es: {
+    what: "Pachinko roguelite en la bolsa de valores",
+    hook1: "CADA DÓLAR CUENTA.",
+    hook2: "TÚ DECIDES CUÁNDO SALIR.",
+    ctaTitle: "RECIBE LA DEMO\nEN TU CORREO",
+    ctaSub: "Te enviamos el enlace en cuanto salga.",
+    google: "Continuar con Google",
+    loading: "Cargando…",
+    useEmail: "Usar otro correo",
+    emailLabel: "Tu correo",
+    emailSend: "AVÍSAME",
+    emailBad: "Escribe un correo completo, como nombre@correo.com.",
+    notice: "Al continuar, autorizas a NeonNest Studio a usar tu nombre y correo para avisarte de la demo y de novedades del juego. Para darte de baja, escribe a {contact}.\n{privacy}",
+    noticeEmail: "Al enviar, autorizas a NeonNest Studio a usar tu correo para avisarte de la demo y de novedades del juego. Para darte de baja, escribe a {contact}.\n{privacy}",
+    privacyLink: "Aviso de privacidad",
+    inApp: "Este navegador no permite entrar con Google. Ábrelo en tu navegador o escribe tu correo aquí.",
+    openBrowser: "ABRIR EN EL NAVEGADOR",
+    popupClosed: "No se completó el acceso con Google. Inténtalo de nuevo o usa otro correo.",
+    googleDown: "Google no cargó con esta conexión. Escribe tu correo aquí.",
+    saving: "Guardando tu correo…",
+    saveFailed: "No pudimos guardar tu correo. Revisa tu conexión e inténtalo de nuevo.",
+    retry: "REINTENTAR",
+    doneTitle: "¡LISTO!",
+    doneTitleName: "¡LISTO, {name}!",
+    doneLead: "Te enviaremos el enlace de la demo a {email} en cuanto salga.",
+    profileAsk: "¿Qué te describe mejor? (opcional)",
+    pPlayer: "Juego por diversión",
+    pIndustry: "Estudio o publisher",
+    pPress: "Prensa o contenido",
+    instagram: "SÍGUENOS EN INSTAGRAM",
+    watchTrailer: "Ver tráiler completo",
+    subject: "Baja de MARKET BOUNCE"
+  },
+  en: {
+    what: "Pachinko roguelite on the stock market",
+    hook1: "EVERY DOLLAR COUNTS.",
+    hook2: "YOU DECIDE WHEN TO GET OUT.",
+    ctaTitle: "GET THE DEMO\nIN YOUR INBOX",
+    ctaSub: "We'll email you the link as soon as it's out.",
+    google: "Continue with Google",
+    loading: "Loading…",
+    useEmail: "Use another email",
+    emailLabel: "Your email",
+    emailSend: "NOTIFY ME",
+    emailBad: "Enter a full email address, like name@email.com.",
+    notice: "By continuing, you authorize NeonNest Studio to use your name and email to tell you about the demo and game news. To unsubscribe, write to {contact}.\n{privacy}",
+    noticeEmail: "By sending, you authorize NeonNest Studio to use your email to tell you about the demo and game news. To unsubscribe, write to {contact}.\n{privacy}",
+    privacyLink: "Privacy notice",
+    inApp: "This browser doesn't allow Google sign-in. Open your regular browser or enter your email here.",
+    openBrowser: "OPEN IN BROWSER",
+    popupClosed: "Google sign-in wasn't completed. Try again or use another email.",
+    googleDown: "Google didn't load on this connection. Enter your email here.",
+    saving: "Saving your email…",
+    saveFailed: "We couldn't save your email. Check your connection and try again.",
+    retry: "TRY AGAIN",
+    doneTitle: "YOU'RE IN!",
+    doneTitleName: "YOU'RE IN, {name}!",
+    doneLead: "We'll email the demo link to {email} as soon as it's out.",
+    profileAsk: "What describes you best? (optional)",
+    pPlayer: "I play for fun",
+    pIndustry: "Studio or publisher",
+    pPress: "Press or content",
+    instagram: "FOLLOW US ON INSTAGRAM",
+    watchTrailer: "Watch full trailer",
+    subject: "Unsubscribe from MARKET BOUNCE"
+  }
+};
+var PROFILES = [["jugador", "pPlayer"], ["industria", "pIndustry"], ["prensa", "pPress"]];
+
+var $ = function (id) { return document.getElementById(id); };
+var params = new URLSearchParams(location.search);
+var source = (params.get("src") || "directo").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 20) || "directo";
+var state = { lang: "es", gsi: "loading", formOpen: false, message: "", person: null, leadId: "", profile: "", lastPayload: null };
+var tokenClient = null;
+
+function storedLang() { try { return localStorage.getItem("mb_lang"); } catch (e) { return null; } }
+function storeLang(v) { try { localStorage.setItem("mb_lang", v); } catch (e) {} }
+function pickLang() {
+  var asked = params.get("lang") || storedLang();
+  if (asked === "es" || asked === "en") return asked;
+  return /^es\b/i.test(navigator.language || "") ? "es" : "en";
+}
+function t(key, lang) { return TEXT[lang || state.lang][key]; }
+// Both languages share one grid cell and the inactive one stays invisible, so
+// each text always measures its longest language and nothing moves on a switch.
+function stacked(el, build) {
+  el.textContent = "";
+  el.classList.add("both");
+  ["es", "en"].forEach(function (lang) {
+    var layer = document.createElement("span");
+    layer.lang = lang;
+    if (lang !== state.lang) layer.setAttribute("aria-hidden", "true");
+    build(layer, lang);
+    el.appendChild(layer);
+  });
+}
+function textIn(el, text) {
+  stacked(el, function (layer, lang) { layer.textContent = text(lang); });
+}
+function fill(text, values) {
+  return text.replace(/\{(\w+)\}/g, function (_, k) { return values[k] == null ? "" : values[k]; });
+}
+function isInAppBrowser(ua) {
+  return /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|TikTok|Snapchat|WhatsApp|GSA\/|; wv\)/i.test(ua);
+}
+function externalBrowserLink() {
+  var ua = navigator.userAgent;
+  var rest = location.host + location.pathname + location.search;
+  if (/Android/i.test(ua)) return "intent://" + rest + "#Intent;scheme=https;action=android.intent.action.VIEW;end";
+  if (/iPhone|iPad|iPod/i.test(ua)) return "x-safari-https://" + rest;
+  return "";
+}
+
+function renderNotice() {
+  stacked($("notice"), function (layer, lang) {
+    var pattern = state.formOpen ? t("noticeEmail", lang) : t("notice", lang);
+    pattern.split(/(\{contact\}|\{privacy\})/).forEach(function (part) {
+      if (part === "{contact}") {
+        var mail = document.createElement("a");
+        mail.href = "mailto:" + CONFIG.contact + "?subject=" + encodeURIComponent(t("subject", lang));
+        mail.textContent = CONFIG.contact;
+        layer.appendChild(mail);
+      } else if (part === "{privacy}") {
+        var link = document.createElement("a");
+        link.href = "privacidad.html?lang=" + lang;
+        link.textContent = t("privacyLink", lang);
+        layer.appendChild(link);
+      } else {
+        layer.appendChild(document.createTextNode(part));
+      }
+    });
+  });
+}
+
+function renderProfiles() {
+  var box = $("profiles");
+  box.textContent = "";
+  PROFILES.forEach(function (item) {
+    var chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    textIn(chip, function (lang) { return t(item[1], lang); });
+    chip.setAttribute("aria-pressed", state.profile === item[0] ? "true" : "false");
+    chip.addEventListener("click", function () { chooseProfile(item[0]); });
+    box.appendChild(chip);
+  });
+}
+
+function render() {
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll("[data-t]").forEach(function (el) {
+    var key = el.getAttribute("data-t");
+    textIn(el, function (lang) { return t(key, lang); });
+  });
+  document.querySelectorAll("[data-lang-toggle]").forEach(function (el) {
+    el.textContent = state.lang === "es" ? "EN" : "ES";
+    el.setAttribute("aria-label", state.lang === "es" ? "Switch to English" : "Cambiar a español");
+  });
+  document.querySelectorAll("[data-privacy]").forEach(function (el) { el.href = "privacidad.html?lang=" + state.lang; });
+  $("email").placeholder = state.lang === "es" ? "nombre@correo.com" : "name@email.com";
+  $("instagram").href = CONFIG.instagram;
+  document.querySelectorAll("[data-trailer]").forEach(function (el) { el.href = CONFIG.trailer; });
+
+  var inApp = state.gsi === "blocked";
+  $("googleBtn").hidden = inApp;
+  $("googleBtn").disabled = state.gsi !== "ready";
+  textIn($("googleLabel"), function (lang) { return state.gsi === "loading" ? t("loading", lang) : t("google", lang); });
+  $("emailToggle").hidden = state.formOpen;
+  $("emailForm").hidden = !state.formOpen;
+  var link = inApp ? externalBrowserLink() : "";
+  $("openBrowser").hidden = !link;
+  if (link) $("openBrowser").href = link;
+
+  $("landingMsg").hidden = !state.message;
+  if (state.message) textIn($("landingMsg"), function (lang) { return t(state.message, lang); });
+  renderNotice();
+  renderDone();
+}
+
+function renderDone() {
+  var person = state.person;
+  textIn($("saving"), function (lang) { return t("saving", lang); });
+  if (!person) return;
+  var first = (person.name || "").trim().split(/\s+/)[0];
+  textIn($("doneTitle"), function (lang) {
+    return first ? fill(t("doneTitleName", lang), { name: first.toUpperCase() }) : t("doneTitle", lang);
+  });
+  textIn($("doneLead"), function (lang) { return fill(t("doneLead", lang), { email: person.email || "" }); });
+  renderProfiles();
+}
+
+function showScreen(which) {
+  $("landing").hidden = which !== "landing";
+  $("done").hidden = which !== "done";
+  scrollTo(0, 0);
+}
+function showSaveState(which) {
+  $("saving").hidden = which !== "saving";
+  $("saved").hidden = which !== "saved";
+  $("failed").hidden = which !== "failed";
+}
+
+function post(payload) {
+  return fetch(CONFIG.endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+    redirect: "follow",
+    keepalive: true
+  }).then(function (res) { return res.json(); });
+}
+function postWithRetry(payload, delays) {
+  return post(payload).then(function (data) {
+    if (!data.ok && data.retry === false) throw Object.assign(new Error(data.error || "rejected"), { final: true, data: data });
+    if (!data.ok) throw new Error(data.error || "rejected");
+    return data;
+  }).catch(function (error) {
+    if (error.final || !delays.length) throw error;
+    return new Promise(function (resolve) { setTimeout(resolve, delays[0]); }).then(function () {
+      return postWithRetry(payload, delays.slice(1));
+    });
+  });
+}
+
+function save(payload) {
+  state.lastPayload = payload;
+  showScreen("done");
+  showSaveState("saving");
+  render();
+  return postWithRetry(payload, [1200, 3000]).then(function (data) {
+    state.person = { name: data.name || "", email: data.email || "" };
+    state.leadId = data.id || "";
+    state.profile = data.profile || "";
+    state.lastPayload = null;
+    showSaveState("saved");
+    render();
+    $("doneTitle").focus({ preventScroll: true });
+  }).catch(function (error) {
+    if (error.final && error.data && error.data.error === "email") {
+      state.formOpen = true;
+      state.message = "emailBad";
+      showScreen("landing");
+      render();
+      return;
+    }
+    showSaveState("failed");
+  });
+}
+
+function basePayload(extra) {
+  var payload = { lang: state.lang, src: source, notice: CONFIG.noticeVersion, website: $("website").value };
+  Object.keys(extra).forEach(function (k) { payload[k] = extra[k]; });
+  return payload;
+}
+
+function chooseProfile(profile) {
+  if (!state.leadId) return;
+  state.profile = profile;
+  renderProfiles();
+  post({ action: "profile", id: state.leadId, profile: profile }).catch(function () {});
+}
+
+function onGoogleToken(response) {
+  if (response && response.access_token) {
+    state.message = "";
+    save(basePayload({ action: "google", token: response.access_token }));
+  } else {
+    state.message = "popupClosed";
+    render();
+  }
+}
+function onGoogleError() {
+  state.message = "popupClosed";
+  render();
+}
+window.gsiReady = function () {
+  if (state.gsi === "blocked") return;
+  try {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CONFIG.clientId,
+      scope: "openid email profile",
+      callback: onGoogleToken,
+      error_callback: onGoogleError
+    });
+    state.gsi = "ready";
+    if (state.message === "googleDown") { state.message = ""; }
+  } catch (e) { window.gsiFailed(); return; }
+  render();
+};
+window.gsiFailed = function () {
+  if (state.gsi === "blocked" || state.gsi === "ready") return;
+  state.gsi = "failed";
+  state.formOpen = true;
+  state.message = "googleDown";
+  render();
+};
+
+$("googleBtn").addEventListener("click", function () {
+  if (!tokenClient) return;
+  state.message = "";
+  render();
+  tokenClient.requestAccessToken();
+});
+$("emailToggle").addEventListener("click", function () {
+  state.formOpen = true;
+  render();
+  $("email").focus();
+});
+$("emailForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+  var email = $("email").value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
+    state.message = "emailBad";
+    render();
+    $("email").focus();
+    return;
+  }
+  state.message = "";
+  state.person = { name: "", email: email };
+  save(basePayload({ action: "email", email: email }));
+});
+$("retry").addEventListener("click", function () {
+  if (state.lastPayload) save(state.lastPayload);
+});
+document.querySelectorAll("[data-lang-toggle]").forEach(function (el) {
+  el.addEventListener("click", function () {
+    state.lang = state.lang === "es" ? "en" : "es";
+    storeLang(state.lang);
+    render();
+    if (clipOn) playClip($("clip").currentTime);
+  });
+});
+
+var clipOn = false;
+function playClip(from) {
+  var video = $("clip");
+  if (from) {
+    video.addEventListener("loadedmetadata", function resume() {
+      video.removeEventListener("loadedmetadata", resume);
+      video.currentTime = from;
+    });
+  }
+  video.src = "assets/trailer_" + state.lang + ".mp4";
+  video.play().catch(function () {});
+}
+function startClip() {
+  var connection = navigator.connection || {};
+  var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calm || connection.saveData) return;
+  clipOn = true;
+  playClip(0);
+}
+function loadGoogle() {
+  var script = document.createElement("script");
+  script.src = "https://accounts.google.com/gsi/client";
+  script.async = true;
+  script.onload = window.gsiReady;
+  script.onerror = window.gsiFailed;
+  document.head.appendChild(script);
+  setTimeout(function () { if (state.gsi === "loading") window.gsiFailed(); }, 8000);
+}
+
+state.lang = pickLang();
+if (isInAppBrowser(navigator.userAgent)) {
+  state.gsi = "blocked";
+  state.formOpen = true;
+  state.message = "inApp";
+} else {
+  loadGoogle();
+}
+render();
+if (document.readyState === "complete") startClip();
+else addEventListener("load", startClip);
+</script>
+</body>
+</html>
